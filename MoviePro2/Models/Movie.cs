@@ -31,6 +31,7 @@ namespace MoviePro2.Models
         [Display(Name = "Trailer URL")]
         public string Trailer { get; set; }
 
+        // many to many relationship
         public ICollection<Cast> Cast { get; set; } = new HashSet<Cast>();
 
         public ICollection<Crew> Crew { get; set; } = new HashSet<Crew>();

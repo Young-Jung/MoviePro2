@@ -340,4 +340,4 @@ ASALocalRun/
 healthchecksdb
 
 appsettings.json
-appsettings.developer.json
+appsettings.Development.json
