@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoviePro2.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -30,6 +31,8 @@ namespace MoviePro2.Models
         // Public URL of the Trailer
         [Display(Name = "Trailer URL")]
         public string Trailer { get; set; }
+
+        public MovieRating Rating { get; set; }
 
         // many to many relationship
         public ICollection<Cast> Cast { get; set; } = new HashSet<Cast>();

@@ -1,5 +1,7 @@
 ﻿@model MoviePro2.Models.Cast
 
+@using MoviePro2.Services
+@inject IImageService imageService 
 @{
     ViewData["Title"] = "Delete";
 }
@@ -45,13 +47,7 @@
             @Html.DisplayNameFor(model => model.Profile)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Profile)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContentType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContentType)
+            <img class="img-fluid" src="@imageService.DecodePoster(Model.Profile, Model.ContentType)" />
         </dd>
     </dl>
     
