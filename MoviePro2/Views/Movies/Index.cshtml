@@ -1,16 +1,19 @@
 ﻿@model IEnumerable<MoviePro2.Models.Movie>
 
+@using MoviePro2.Services
+@inject IImageService imageService
+  
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Movies</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Movie</a>
 </p>
 <table class="table">
-    <thead>
+    <thead class="align-top">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.MovieID)
@@ -27,18 +30,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseDate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Poster)
+            </th>
             @*<th>
-            @Html.DisplayNameFor(model => model.Poster)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.ContentType)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BGImage)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BGContentType)
-        </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.BGImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BGContentType)
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Trailer)
             </th>
@@ -63,16 +66,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ReleaseDate)
             </td>
+            <td>
+                <img class="img-fluid" src="@imageService.DecodePoster(item.Poster, item.ContentType)" width="50px" height="50px" />
+            </td>
             @*<td>
-                @Html.DisplayFor(modelItem => item.Poster)
-            </td>
+            @Html.DisplayFor(modelItem => item.ContentType)
+        </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ContentType)
+                <img class="img-fluid" src="@imageService.DecodePoster(item.BGImage, item.BGContentType)" width="50px" height="50px" />
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BGImage)
-            </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.BGContentType)
             </td>*@
             <td>

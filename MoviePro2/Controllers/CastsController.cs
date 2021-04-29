@@ -2,27 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MoviePro2.Data;
 using MoviePro2.Models;
+using MoviePro2.Services;
 
 namespace MoviePro2.Controllers
 {
     public class CastsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public CastsController(ApplicationDbContext context)
+        public CastsController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: Casts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Cast.ToListAsync());
+
+            return View(await _context.Cast.Include(c => c.Movie).ToListAsync());
         }
 
         // GET: Casts/Details/5
@@ -34,6 +39,7 @@ namespace MoviePro2.Controllers
             }
 
             var cast = await _context.Cast
+                .Include(c => c.Movie)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cast == null)
             {
@@ -46,6 +52,7 @@ namespace MoviePro2.Controllers
         // GET: Casts/Create
         public IActionResult Create()
         {
+            ViewData["MovieID"] = new SelectList(_context.Movie, "Id", "Title");
             return View();
         }
 
@@ -54,14 +61,20 @@ namespace MoviePro2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,MovieId,CastID,Department,Name,Character,Order,Profile,ContentType")] Cast cast)
+        public async Task<IActionResult> Create([Bind("Id,MovieId,CastID,Department,Name,Character,Order")] Cast cast, IFormFile profile)
         {
             if (ModelState.IsValid)
             {
+                if(profile is not null)
+                {
+                    cast.ContentType = _imageService.RecordContentType(profile);
+                    cast.Profile = await _imageService.EncodePosterAsync(profile);
+                }
                 _context.Add(cast);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MovieID"] = new SelectList(_context.Movie, "Id", "Title", cast.MovieId);
             return View(cast);
         }
 
@@ -78,6 +91,7 @@ namespace MoviePro2.Controllers
             {
                 return NotFound();
             }
+            ViewData["MovieID"] = new SelectList(_context.Movie, "Id", "Title", cast.MovieId);
             return View(cast);
         }
 
@@ -86,7 +100,7 @@ namespace MoviePro2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,CastID,Department,Name,Character,Order,Profile,ContentType")] Cast cast)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,MovieId,CastID,Department,Name,Character,Order,Profile,ContentType")] Cast cast, IFormFile NewProfile)
         {
             if (id != cast.Id)
             {
@@ -97,6 +111,12 @@ namespace MoviePro2.Controllers
             {
                 try
                 {
+                    if(NewProfile is not null)
+                    {
+                        cast.ContentType = _imageService.RecordContentType(NewProfile);
+                        cast.Profile = await _imageService.EncodePosterAsync(NewProfile);
+                    }
+
                     _context.Update(cast);
                     await _context.SaveChangesAsync();
                 }
@@ -111,6 +131,7 @@ namespace MoviePro2.Controllers
                         throw;
                     }
                 }
+                ViewData["MovieID"] = new SelectList(_context.Movie, "Id", "Title", cast.MovieId);
                 return RedirectToAction(nameof(Index));
             }
             return View(cast);

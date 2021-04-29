@@ -18,5 +18,7 @@ namespace MoviePro2.Models
         public string Job { get; set; }
         public byte[] Profile { get; set; }
         public string ContentType { get; set; }
+
+        public Movie Movie { get; set; }
     }
 }

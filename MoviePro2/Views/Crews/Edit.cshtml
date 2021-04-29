@@ -1,5 +1,8 @@
 ﻿@model MoviePro2.Models.Crew
 
+@using MoviePro2.Services
+@inject IImageService _imageService
+
 @{
     ViewData["Title"] = "Edit";
 }
@@ -10,12 +13,16 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Profile" />
+            <input type="hidden" asp-for="ContentType" />
+
             <div class="form-group">
                 <label asp-for="MovieID" class="control-label"></label>
                 <select asp-for="MovieID" class="form-control" asp-items="ViewBag.MovieID"></select>
+                @*<input type="text" asp-for="MovieID" class="form-control" />*@
                 <span asp-validation-for="MovieID" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -40,14 +47,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Profile" class="control-label"></label>
-                <input asp-for="Profile" class="form-control" />
+                <input type="file" name="NewProfile" class="form-control" />
                 <span asp-validation-for="Profile" class="text-danger"></span>
-            </div>
+                <img id="oldProfile" class="img-fluid" src="@_imageService.DecodePoster(Model.Profile, Model.ContentType)" width="50%" height="50%" />
+            @*</div>
             <div class="form-group">
                 <label asp-for="ContentType" class="control-label"></label>
                 <input asp-for="ContentType" class="form-control" />
                 <span asp-validation-for="ContentType" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
