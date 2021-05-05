@@ -7,14 +7,14 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+@*<h1>Details</h1>*@
 
 <div>
-    <h4>Movie</h4>
-    <hr />
+    @*<h4>Movie</h4>
+    <hr />*@
     <div class="row">
-        <div class="col-4">
-            <img id="posterImage" class="img-fluid" src="@_imageService.DecodePoster(Model.Poster, Model.ContentType)" />
+        <div class="col-4 div_poster">
+            <img id="posterImage" class="img-fluid rounded-lg" src="@_imageService.DecodePoster(Model.Poster, Model.ContentType)" />
             @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Poster)
         </dt>
@@ -41,7 +41,20 @@
         </dd>*@
         </div>
         <div class="col-8">
+            <div class="row">
+                <div class="div_title">
+                    <h2>@Html.DisplayFor(model => model.Title)</h2>
+                    <p>@Html.DisplayFor(model => model.Rating)</p>
+                </div>
+            </div>
+            <div class="row">
+                <h3 class="tagline">@Html.DisplayFor(model => model.TagLine)</h3>
+            </div>
+
+            <p>Overview</p>
+            <p>@Html.DisplayFor(model => model.Overview)</p>
             <dl class="row">
+
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.MovieID)
                 </dt>

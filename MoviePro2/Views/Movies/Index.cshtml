@@ -90,3 +90,55 @@
 }
     </tbody>
 </table>
+
+
+<div class="row mb-3">
+    @foreach (var movie in Model)
+    {
+        <div class="col-sm-4 mb-3">
+            <div class="card h-100 mb-3 shadow rounded-lg" style="width:18rem;">
+                <a data-toggle="modal" data-target="#modal-@movie.Id">
+                    <img class="card-img-top img-fluid" src="@imageService.DecodePoster(movie.Poster, movie.ContentType)" alt="@movie.Title picture" style="cursor: pointer;">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">@movie.Title</h5>
+                    <p class="card-text">@movie.TagLine</p>
+
+                </div>
+                <div class="card-footer text-muted">
+                    <a asp-action="Edit" asp-route-id="@movie.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@movie.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@movie.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+    @foreach (var movie in Model)
+    {
+        <div class="modal fade" id="modal-@movie.Id" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@movie.Title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>@movie.TagLine</p>
+                        <p>@movie.Overview</p>
+                        <p>@movie.Rating</p>
+                        <p>@movie.ReleaseDate.ToString("MM/yy")</p>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+

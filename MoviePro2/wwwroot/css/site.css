@@ -69,3 +69,33 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.card-fixed {
+    height: 18rem;
+    vertical-align: top;
+    object-fit: cover;
+}
+
+.div_poster {
+    border-width:0px;
+    min-width:300px;
+    width:300px;
+    overflow: hidden;
+}
+
+.div_title h2 {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+.tagline {
+    width: 100%;
+    margin: 0 0 8px 0;
+    font-style: italic;
+    font-size: 1.1rem;
+    font-weight: 400;
+    opacity: 0.7;
+}
